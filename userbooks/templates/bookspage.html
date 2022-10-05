@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    
+    <div>
+        <nav class="navbar navbar-dark bg-dark">
+            <form class="form-inline">
+             
+              <h2  style="margin-left: 100px; color: white;" >Welcome    {{request.session.firstname}} !</h2>
+              <a href="/logout"  style="margin-left: 900px">logout</a>
+            </form>
+          </nav>
+    </div>
+    <div  style="display: flex; justify-content:space-around; margin-top: 100px;" >
+
+    <div style="width:500px; height:500px; padding: 15px  "  >
+        <h1>Add your favorite book!</h1>
+    <form  method="post"  action="/addbook"  style="margin-top: 20px"   >
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleInputEmail1">Title</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"   name="title">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Description</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="desc">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+
+        </div>
+
+
+        <Div    >
+            <h2>All Books!</h2>
+            {%for book in books%}
+            <a href="/books/{{book.id}}">>>>{{book.title}}</a>
+           
+            <p>({{book.uploaded_by.first_name}}   {{book.uploaded_by.last_name}}  )</p>
+            {%if request.session.userid in book.users_who_like.all%}
+                    <p>This is one of your favorites!</p>
+                    
+                         {%else%}
+                <div><a href="/books/{{book.id}}">Add to favorite</a></div>
+                        {%endif%}
+            {%endfor%}
+            
+        </Div>
+    </div>
+    
+
+        <div style="margin-left: 900px"  >
+
+            {% if messages %}
+        <ul class="messages">    
+            {% for message in messages %}    
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+            {% endfor %}
+        </ul>
+        {% endif %}
+        </div>
+
+
+
+
+
+
+
+</body>
+</html>
